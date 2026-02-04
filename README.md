@@ -277,27 +277,27 @@ Metrics are computed on the held-out test set after full training. Results are s
 
 | Metric | RBC | WBC | Platelet | Mean |
 |--------|-----|-----|----------|------|
-| IoU | - | - | - | - |
-| Dice | - | - | - | - |
+| IoU | 0.9207 | 0.0000 | 0.0000 | 0.3069 |
+| Dice | 0.9587 | 0.0000 | 0.0000 | 0.3196 |
 
 | Detection Metric (IoU=0.5) | Value |
 |---------------------------|-------|
-| Precision | - |
-| Recall | - |
-| F1 | - |
+| Precision | 0.8823 |
+| Recall | 0.5809 |
+| F1 | 0.7005 |
 
 | Instance Segmentation | Value |
 |----------------------|-------|
-| mAP@0.50 | - |
-| mAP@[.50:.95] | - |
+| mAP@0.50 | 0.4819 |
+| mAP@[.50:.95] | 0.3865 |
 
 | Panoptic Quality | Value |
 |-----------------|-------|
-| PQ | - |
-| SQ | - |
-| RQ | - |
+| PQ | 0.7356 |
+| SQ | 0.8928 |
+| RQ | 0.8239 |
 
-*(Fill in after training completes)*
+**Note on WBC/Platelet classification:** The zero IoU/Dice for WBC and Platelet classes reflects a class weight imbalance in the NC loss that was identified and corrected during development (see CHANGELOG). The model detects and segments cell instances well (PQ=0.74, Precision=0.88) but the classification head was undertrained for minority classes. Retraining with corrected class weights (`CLASS_WEIGHTS=[0.05, 0.5, 5.0, 8.0]` and NC loss weight=2.0) is expected to resolve this.
 
 ### Qualitative Results
 
