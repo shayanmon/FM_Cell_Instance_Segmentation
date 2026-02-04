@@ -1,0 +1,30 @@
+# Data — raw Kaggle download and processed numpy arrays
+data/
+BCCD Dataset with mask/
+
+# Model checkpoints (too large for GitHub, ~1.3GB each)
+checkpoints/
+
+# Training history binaries (curves are saved as PNGs)
+results/*.pth
+
+# Stray metrics file (real one lives in results/)
+metrics.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Claude config
+.claude/
