@@ -1,0 +1,73 @@
+{
+  "task": "binary",
+  "num_images": 159,
+  "foreground": {
+    "iou": 0.9212098206989596,
+    "dice": 0.958989289742244
+  },
+  "detection": {
+    "precision": 0.9666702737788478,
+    "recall": 0.8601001347960137,
+    "f1": 0.9102766547195587,
+    "tp": 8933,
+    "fp": 308,
+    "fn": 1453
+  },
+  "mAP_50": 0.7993741584950677,
+  "mAP_50_95": 0.6340992045226502,
+  "panoptic": {
+    "PQ": 0.8225920757731326,
+    "SQ": 0.9036725999784915,
+    "RQ": 0.910276659702542
+  },
+  "counting": {
+    "mean_gt_per_image": 65.32075471698113,
+    "mean_pred_per_image": 58.119496855345915,
+    "mae": 7.276729559748428,
+    "mean_signed_error": -7.20125786163522,
+    "mean_abs_pct_error": 10.48612277519306
+  },
+  "legacy": {
+    "note": "Notebook formulas, for tracing v1 numbers only: mean IoU/Dice over RBC/WBC/Platelet with every cell counted as RBC (= foreground / 3); non-standard RQ.",
+    "pixel_iou": {
+      "RBC": 0.9212098206989596,
+      "WBC": 0.0,
+      "Platelet": 0.0
+    },
+    "pixel_dice": {
+      "RBC": 0.958989289742244,
+      "WBC": 0.0,
+      "Platelet": 0.0
+    },
+    "mean_iou": 0.30706994023298656,
+    "mean_dice": 0.319663096580748,
+    "panoptic": {
+      "PQ": 0.8612282072159607,
+      "SQ": 0.9036725999784915,
+      "RQ": 0.953031227500379
+    }
+  },
+  "meta": {
+    "checkpoint": "C:\\Users\\smonabb\\Documents\\UNI_instance_seg_UNI_DDP\\checkpoints\\best_phase2.pth",
+    "split": "test",
+    "phase": 2,
+    "epoch": 42,
+    "val_loss_at_save": 0.630412296815352,
+    "backbone": {
+      "name": "uni",
+      "repo_id": "MahmoodLab/UNI",
+      "revision": "b55a5ec6cade1a39edfe6534189a9b8ca7a022f0",
+      "weights_file": "pytorch_model.bin",
+      "size_bytes": 1213527781
+    },
+    "lora": {
+      "rank": 4,
+      "alpha": 4.0
+    },
+    "legacy_nc_head_dropped": false,
+    "hv_activation": "clip",
+    "postproc": "hovernet",
+    "legacy_notebook_eval": false,
+    "eval_seconds": 18.4
+  }
+}

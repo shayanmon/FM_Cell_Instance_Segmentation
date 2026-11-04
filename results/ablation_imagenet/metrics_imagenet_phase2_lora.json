@@ -1,0 +1,70 @@
+{
+  "task": "binary",
+  "num_images": 159,
+  "foreground": {
+    "iou": 0.9192046716923264,
+    "dice": 0.9579016612978387
+  },
+  "detection": {
+    "precision": 0.9665722996505154,
+    "recall": 0.8547082611199165,
+    "f1": 0.9072049004854876,
+    "tp": 8877,
+    "fp": 307,
+    "fn": 1509
+  },
+  "mAP_50": 0.7958543385802685,
+  "mAP_50_95": 0.6235651483101412,
+  "panoptic": {
+    "PQ": 0.817938071722958,
+    "SQ": 0.9016023467181845,
+    "RQ": 0.9072049054666251
+  },
+  "counting": {
+    "mean_gt_per_image": 65.32075471698113,
+    "mean_pred_per_image": 57.76100628930818,
+    "mae": 7.59748427672956,
+    "mean_signed_error": -7.559748427672956,
+    "mean_abs_pct_error": 10.934743213750153
+  },
+  "legacy": {
+    "note": "Notebook formulas, for tracing v1 numbers only: mean IoU/Dice over RBC/WBC/Platelet with every cell counted as RBC (= foreground / 3); non-standard RQ.",
+    "pixel_iou": {
+      "RBC": 0.9192046716923264,
+      "WBC": 0.0,
+      "Platelet": 0.0
+    },
+    "pixel_dice": {
+      "RBC": 0.9579016612978387,
+      "WBC": 0.0,
+      "Platelet": 0.0
+    },
+    "mean_iou": 0.3064015572307755,
+    "mean_dice": 0.31930055376594624,
+    "panoptic": {
+      "PQ": 0.8577348611925963,
+      "SQ": 0.9016023467181845,
+      "RQ": 0.9513449741060845
+    }
+  },
+  "meta": {
+    "checkpoint": "C:\\Users\\smonabb\\Documents\\UNI_instance_seg_UNI_DDP\\checkpoints\\ablation_imagenet\\best_phase2.pth",
+    "split": "test",
+    "phase": 2,
+    "epoch": 41,
+    "val_loss_at_save": 0.6568689183755354,
+    "backbone": {
+      "name": "imagenet",
+      "timm_model": "vit_large_patch16_224"
+    },
+    "lora": {
+      "rank": 4,
+      "alpha": 4.0
+    },
+    "legacy_nc_head_dropped": false,
+    "hv_activation": "clip",
+    "postproc": "hovernet",
+    "legacy_notebook_eval": false,
+    "eval_seconds": 19.1
+  }
+}

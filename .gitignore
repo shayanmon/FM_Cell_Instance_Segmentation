@@ -2,14 +2,18 @@
 data/
 BCCD Dataset with mask/
 
-# Model checkpoints (too large for GitHub, ~1.3GB each)
+# Model checkpoints (trainable-only, ~50 MB each; never commit UNI weights)
 checkpoints/
 
-# Training history binaries (curves are saved as PNGs)
-results/*.pth
+# Training logs (summaries are kept in results/)
+logs/
 
-# Stray metrics file (real one lives in results/)
-metrics.json
+# Binary training histories (JSON copies are kept)
+results/**/*.pth
+
+# Local virtual environment and scratch runs
+.venv/
+smoke_runs/
 
 # Python
 __pycache__/

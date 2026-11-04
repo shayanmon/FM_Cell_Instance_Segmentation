@@ -6,78 +6,35 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:2
 #SBATCH --mem=128G
-#SBATCH --cpus-per-task=8
-#SBATCH --ntasks-per-node=2
+#SBATCH --cpus-per-task=16
+#SBATCH --ntasks=1
 #SBATCH --nodes=1
 
 # ============================================================
-# UNI Cell Instance Segmentation — Multi-GPU DDP Training
-# Usage: sbatch slurm_train_ddp.sh
-# Requests 2 GPUs on 1 node, runs 1 process per GPU via srun
+# UNI Cell Instance Segmentation — multi-GPU DDP training (single node)
+# Usage: sbatch slurm_train_ddp.sh    (submit from the project directory)
+# One SLURM task; torchrun starts one process per allocated GPU (NCCL backend).
+# Global batch stays 16 (world x micro-batch x accumulation), so results are
+# comparable with single-GPU runs.
 # ============================================================
 
-set -e
+set -euo pipefail
 
-# Activate conda environment
-source $(conda info --base)/etc/profile.d/conda.sh
+source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate uni_seg
 
-# HuggingFace token
-# export HF_TOKEN="hf_xxxxx"
-
-# Cache directories
-if [ -n "$SLURM_TMPDIR" ]; then
-    export HF_HOME="${SLURM_TMPDIR}/hf_cache"
-    export TORCH_HOME="${SLURM_TMPDIR}/torch_cache"
-    mkdir -p "$HF_HOME" "$TORCH_HOME"
-fi
-
-export CUDA_LAUNCH_BLOCKING=0
-
-# DDP environment variables (NCCL)
-export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
-export MASTER_PORT=29500
-
-PROJECT_DIR="$(dirname "$(readlink -f "$0")")"
+PROJECT_DIR="${SLURM_SUBMIT_DIR:-$(dirname "$(readlink -f "$0")")}"
 cd "$PROJECT_DIR"
-mkdir -p logs checkpoints results data/processed
 
+NGPU=$(python -c "import torch; print(torch.cuda.device_count())")
 echo "=============================="
-echo "Job ID: $SLURM_JOB_ID"
-echo "Nodes: $SLURM_NODELIST"
-echo "GPUs per node: $SLURM_GPUS_ON_NODE"
-echo "Tasks (processes): $SLURM_NTASKS"
-echo "MASTER_ADDR: $MASTER_ADDR"
-echo "MASTER_PORT: $MASTER_PORT"
-echo "Start time: $(date)"
-echo "Working dir: $PROJECT_DIR"
+echo "Job ID: ${SLURM_JOB_ID:-n/a} | Node: ${SLURM_NODELIST:-n/a} | GPUs: $NGPU"
+nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
+echo "Start time: $(date) | Working dir: $PROJECT_DIR"
 echo "=============================="
 
-# Phase 1 with DDP (srun launches SLURM_NTASKS processes)
-srun papermill cell_instance_segmentation.ipynb results/train_phase1_ddp_${SLURM_JOB_ID}.ipynb \
-    -p MODE "train" \
-    -p PHASE 1 \
-    -p EPOCHS 100 \
-    -p BATCH_SIZE 16 \
-    -p LR 1e-3 \
-    -p NUM_WORKERS 8 \
-    -p USE_DDP True \
-    -k uni_seg
+# Workers per process: split the CPU allocation across ranks
+NPROC=$NGPU NUM_WORKERS=$(( ${SLURM_CPUS_PER_TASK:-16} / NGPU )) bash scripts/train_ddp.sh
 
-echo "Phase 1 DDP training completed at $(date)"
-
-# Phase 2 with DDP
-srun papermill cell_instance_segmentation.ipynb results/train_phase2_ddp_${SLURM_JOB_ID}.ipynb \
-    -p MODE "train" \
-    -p PHASE 2 \
-    -p EPOCHS 50 \
-    -p BATCH_SIZE 8 \
-    -p LR 1e-4 \
-    -p NUM_WORKERS 8 \
-    -p USE_DDP True \
-    -p CHECKPOINT_PATH "checkpoints/best_phase1.pth" \
-    -k uni_seg
-
-echo "Phase 2 DDP training completed at $(date)"
-echo "GPU utilization summary:"
+echo "Finished at $(date)"
 nvidia-smi

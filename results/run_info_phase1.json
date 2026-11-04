@@ -1,0 +1,68 @@
+{
+  "phase": 1,
+  "backbone": {
+    "name": "uni",
+    "repo_id": "MahmoodLab/UNI",
+    "revision": "b55a5ec6cade1a39edfe6534189a9b8ca7a022f0",
+    "weights_file": "pytorch_model.bin",
+    "size_bytes": 1213527781
+  },
+  "lora": null,
+  "distributed": {
+    "active": true,
+    "backend": "gloo",
+    "world_size": 1,
+    "gpus": [
+      "NVIDIA RTX 5000 Ada Generation"
+    ],
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "batch": {
+    "global": 16,
+    "micro_batch_per_process": 16,
+    "grad_accum_steps": 1
+  },
+  "epochs_completed": 40,
+  "epochs_max": 100,
+  "stopped_early": true,
+  "best_epoch": 24,
+  "best_val_loss": 0.6623778126456521,
+  "mean_epoch_seconds": 15.343683868646622,
+  "total_train_seconds": 613.7473547458649,
+  "this_invocation_seconds": 619.4265923500061,
+  "resumed_at_epochs": [],
+  "versions": {
+    "torch": "2.14.1+cu126",
+    "cuda": "12.6",
+    "python": "3.11.9"
+  },
+  "args": {
+    "phase": 1,
+    "epochs": 100,
+    "batch_size": 16,
+    "micro_batch": null,
+    "lr": 0.001,
+    "lr_decoder": 0.0001,
+    "lr_lora": 1e-05,
+    "weight_decay": 0.0001,
+    "warmup_epochs": 5,
+    "patience": 15,
+    "lora_rank": 4,
+    "lora_alpha": 4.0,
+    "backbone": "uni",
+    "uni_weights": null,
+    "init_checkpoint": null,
+    "data_dir": "data/processed",
+    "save_dir": "checkpoints",
+    "results_dir": "results",
+    "log_dir": "logs",
+    "num_workers": 4,
+    "seed": 42,
+    "amp": "fp16",
+    "dist_backend": "auto",
+    "no_resume": false,
+    "max_steps_per_epoch": null,
+    "smoke_random_backbone": false,
+    "log_every": 0
+  }
+}
